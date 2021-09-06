@@ -1,6 +1,7 @@
 <template>
   <div class="pesels-grid">
     <ImageCard
+        v-if="chunkedPesels.length > 0"
         v-for="pesel in chunkedPesels"
         :key="pesel.url"
         :url="pesel.url"
@@ -8,6 +9,7 @@
         :isFavourite="isFavourite(pesel)"
         @toggleFavourites="toggleFavourites(pesel)"
     />
+    <div v-else class="no-favorites">There are no favorites yet</div>
   </div>
   <div v-if="hasShowedAll">
     This is the end
@@ -16,7 +18,7 @@
 
 <script>
 import { useStore } from 'vuex'
-import {onMounted, onBeforeMount, ref, onBeforeUnmount, computed } from 'vue';
+import { onMounted, onBeforeMount, ref, onBeforeUnmount, computed } from 'vue';
 import ImageCard from '../../components/ImageCard';
 
 export default {
@@ -79,5 +81,9 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 290px;
+}
+
+.no-favorites {
+  text-align: center;
 }
 </style>
