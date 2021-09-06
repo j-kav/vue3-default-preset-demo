@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 import { onMounted, onBeforeMount, ref, onBeforeUnmount, computed, watch } from 'vue';
 import BreedFilter from '../../components/BreedFilter';
 import ImageCard from '../../components/ImageCard';
-import { useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 
 export default {
@@ -92,9 +92,14 @@ export default {
       isLoading.value = false;
     }
 
-    watch(() => route.params.breedId, () => {
+    const breedIdWatchStopHandle = watch(() => route.params.breedId, () => {
       currentPage.value = 0;
+      store.commit('pesel/breedAllImages', []);
       fetchBreedImages();
+    });
+
+    onBeforeRouteLeave(() => {
+      breedIdWatchStopHandle();
     });
 
     onBeforeMount( () => {
