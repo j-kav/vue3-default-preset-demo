@@ -49,7 +49,7 @@ const pesel = {
             }
         },
         async fetchAllBreedImages ({ commit }, { breedId }) {
-           const [error, breedImages] = await peselService.fetchAllBreedImages(breedId);
+            const [error, breedImages] = await peselService.fetchAllBreedImages(breedId);
 
             if (error) {
                 commit('error', error)
@@ -58,8 +58,10 @@ const pesel = {
             }
         },
         async fetchShuffledBreedImages ({ commit, state }) {
+            // Only for the demonstrative case. Too many ineffective HTTP requests
            const result = await Promise.all(
-                state.breeds
+               // take 30 breeds it is enough for demo
+               shuffle(state.breeds).slice(0, 30)
                     // fetch 3 of every breeds
                     .map((breed) => peselService.fetchShuffledBreedImages(breed.id, 3))
             ).catch((error) => {
