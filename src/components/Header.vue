@@ -1,16 +1,13 @@
 <template>
   <header class="header">
     <router-link to="/" class="header-brand">PESEL</router-link>
-    <router-link to="/favourites" class="header-favourites">
-      Favourites
-      <img :src="require('@/assets/small-fav-icon.svg')" alt="fav">
-    </router-link>
+    <router-link to="/favourites" class="header-favourites">Favourites</router-link>
   </header>
 </template>
 
 <script>
 export default {
-  name: "Header"
+  name: 'Header'
 }
 </script>
 
@@ -44,13 +41,22 @@ export default {
     vertical-align: baseline;
   }
 
-  .header-favourites.router-link-active img,
-  .header-favourites.router-link-active {
-    color: white;
+  .header-favourites::after {
+    content: ' ';
+    width: 16px;
+    height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    background-image: url('~@/assets/small-fav-icon.svg');
   }
 
-  .header-favourites img {
-    vertical-align: baseline;
+  .header-favourites.router-link-active::after {
+    background-image: url('~@/assets/small-fav-icon-active.svg');
+  }
+
+  .header-favourites.router-link-active {
+    color: white;
   }
 
 </style>

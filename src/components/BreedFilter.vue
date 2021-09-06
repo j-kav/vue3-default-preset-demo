@@ -2,16 +2,24 @@
   <div class="breed-filter">
     <div class="breed-filter-top">
       <div>
-        <span @click="toggleExpand" class="breed-filter-expand-button">Breeds</span>
+        <span @click="toggleExpand"
+              class="breed-filter-expand-button"
+              :class="{ 'breed-filter-expand-button--expanded' : isExpanded }"
+        >
+          Breeds
+        </span>
         <span v-if="selectedBreedId" class="breed-filter-selected-badge">{{normalizedSelectedBreedId(selectedBreedId)}}</span>
       </div>
-
+      <div>
+        <label for="sortByAlphabet" class="sort-by-alphabet">Sort by alphabet</label>
+        <input type="checkbox" name="sortByAlphabet" id="sortByAlphabet" checked>
+      </div>
 
     </div>
     <div class="breed-filter-breeds" :class="{ 'breed-filter-breeds--expanded': isExpanded}">
           <span v-for="breed in breeds"
                 class="breed-filter-badge"
-                @click="toggleSelectedBreedId(breed.id)"
+                @click="selectBreedId(breed.id)"
                 :key="breed.id">
       {{ breed.displayName }}
     </span>
@@ -40,7 +48,7 @@ export default {
     return {
       selectedBreedId: computed(() => route.params.breedId),
       breeds: computed(() => store.state.pesel.breeds),
-      toggleSelectedBreedId: (breedId) => {
+      selectBreedId: (breedId) => {
         isExpanded.value = !isExpanded.value;
         router.push({ name: 'breed', params: { breedId } });
       },
@@ -104,11 +112,29 @@ export default {
    margin-right: 10px;
  }
 
+ .breed-filter-expand-button::after {
+   content: ' ';
+   width: 9px;
+   height: 5px;
+   display: inline-block;
+   vertical-align: middle;
+   margin-left: 2px;
+   background-image: url('~@/assets/arrow-bottom.svg');
+ }
+
+ .breed-filter-expand-button--expanded::after {
+   background-image: url('~@/assets/arrow-top.svg');
+ }
+
  .breed-filter-top {
    margin-bottom: 10px;
    display: flex;
    justify-content: space-between;
    padding-left: 20px;
    padding-right: 20px;
+ }
+
+ .sort-by-alphabet {
+   user-select: none;
  }
 </style>
