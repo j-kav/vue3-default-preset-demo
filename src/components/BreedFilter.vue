@@ -12,17 +12,32 @@
       </div>
       <div>
         <label for="sortByAlphabet" class="sort-by-alphabet">Sort by alphabet</label>
-        <input type="checkbox" name="sortByAlphabet" id="sortByAlphabet" checked>
+        <input type="checkbox" name="sortByAlphabet" id="sortByAlphabet" v-model="isAlphabetSort">
       </div>
 
     </div>
     <div class="breed-filter-breeds" :class="{ 'breed-filter-breeds--expanded': isExpanded}">
-          <span v-for="breed in breeds"
-                class="breed-filter-badge"
-                @click="selectBreedId(breed.id)"
-                :key="breed.id">
-      {{ breed.displayName }}
-    </span>
+      <div v-if="isAlphabetSort">
+        <template v-for="char in Object.keys(groupedAlphabetBreeds)">
+                <span class="char">{{char}}</span>
+                <span
+                    v-for="breed in groupedAlphabetBreeds[char]"
+                    class="breed-filter-badge"
+                    @click="selectBreedId(breed.id)"
+                    :key="breed.id">
+                    {{ breed.displayName }}
+              </span>
+        </template>
+
+      </div>
+      <span
+          v-else
+          v-for="breed in breeds"
+          class="breed-filter-badge"
+          @click="selectBreedId(breed.id)"
+          :key="breed.id">
+              {{ breed.displayName }}
+          </span>
     </div>
   </div>
 </template>
@@ -44,8 +59,22 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const isExpanded = ref(false);
+    const isAlphabetSort = ref(false);
 
     return {
+      isAlphabetSort,
+      groupedAlphabetBreeds: computed(() => {
+        const alphabeticallySorted = store.state.pesel.breeds
+            .slice()
+            .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+        return alphabeticallySorted.reduce((acc, currentValue) => {
+          const character = (currentValue.displayName.charAt(0)).toUpperCase();
+          acc[character] = acc[character] || [];
+          acc[character].push(currentValue);
+          return acc;
+        }, Object.create(null));
+      }),
       selectedBreedId: computed(() => route.params.breedId),
       breeds: computed(() => store.state.pesel.breeds),
       selectBreedId: (breedId) => {
@@ -98,6 +127,7 @@ export default {
    overflow: hidden;
    height: 0;
    transition: height 300ms ease 0ms;
+   text-align: left;
  }
 
  .breed-filter-breeds--expanded {
@@ -136,5 +166,13 @@ export default {
 
  .sort-by-alphabet {
    user-select: none;
+ }
+
+ .char {
+   font-size: 20px;
+   font-weight: 400;
+   color: #626262;
+   padding-right: 10px;
+   padding-left: 5px;
  }
 </style>
