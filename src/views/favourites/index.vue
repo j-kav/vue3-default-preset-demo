@@ -1,14 +1,15 @@
 <template>
   <div class="pesels-grid">
-    <ImageCard
-        v-if="chunkedPesels.length > 0"
-        v-for="pesel in chunkedPesels"
-        :key="pesel.url"
-        :url="pesel.url"
-        :label="pesel.displayName"
-        :isFavourite="isFavourite(pesel)"
-        @toggleFavourites="toggleFavourites(pesel)"
-    />
+    <template v-if="chunkedPesels.length > 0">
+      <ImageCard
+          v-for="pesel in chunkedPesels"
+          :key="pesel.url"
+          :url="pesel.url"
+          :label="pesel.displayName"
+          :isFavourite="isFavourite(pesel)"
+          @toggleFavourites="toggleFavourites(pesel)"
+      />
+    </template>
     <div v-else class="no-favorites">There are no favorites yet</div>
   </div>
   <div v-if="hasShowedAll">

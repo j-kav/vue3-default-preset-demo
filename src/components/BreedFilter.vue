@@ -18,7 +18,7 @@
     </div>
     <div class="breed-filter-breeds" :class="{ 'breed-filter-breeds--expanded': isExpanded}">
       <div v-if="isAlphabetSort">
-        <template v-for="char in Object.keys(groupedAlphabetBreeds)">
+        <template v-for="char in Object.keys(groupedAlphabetBreeds)" :key="char">
                 <span class="char">{{char}}</span>
                 <span
                     v-for="breed in groupedAlphabetBreeds[char]"
