@@ -1,21 +1,21 @@
 <template>
   <BreedFilter />
   <div v-if="isInitialLoading">
-    Loading pesels...
+    Loading dog images...
   </div>
-  <div class="pesels-grid">
+  <div class="grid">
     <ImageCard
-        class="pesels-grid-card"
-        v-for="pesel in chunkedPesels"
-        :key="pesel.url"
-        :url="pesel.url"
-        :label="pesel.displayName"
-        :isFavourite="isFavourite(pesel)"
-        @toggleFavourites="toggleFavourites(pesel)"
+        class="grid-card"
+        v-for="dogImage in chunkedDogImages"
+        :key="dogImage.url"
+        :url="dogImage.url"
+        :label="dogImage.displayName"
+        :isFavourite="isFavourite(dogImage)"
+        @toggleFavourites="toggleFavourites(dogImage)"
     />
   </div>
   <div v-if="isLoading">
-    Loading more pesels
+    Loading more dog images
   </div>
   <div v-if="hasFetchedAll">
     This is the end
@@ -36,12 +36,12 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(async (vm) => {
-      await vm.$store.dispatch('pesel/fetchAllBreeds');
+      await vm.$store.dispatch('dogs/fetchAllBreeds');
     });
   },
   setup() {
     const store = useStore();
-    const pesels = ref([]);
+    const dogImages = ref([]);
     const isInitialLoading = ref(true);
     const isLoading = ref(true);
     const currentPage = ref(0);
@@ -60,11 +60,11 @@ export default {
         isLoading.value = true;
 
         const from = currentPage.value * limit;
-        const peselsChunck = store.state.pesel.shuffledBreedImages.slice(from, from + limit);
+        const dogImagesChunk = store.state.dogs.shuffledBreedImages.slice(from, from + limit);
 
-        pesels.value = [
-          ...pesels.value,
-          ...peselsChunck,
+        dogImages.value = [
+          ...dogImages.value,
+          ...dogImagesChunk,
         ];
         isLoading.value = false;
       }
@@ -79,16 +79,16 @@ export default {
     });
 
     const fetchBreedImages = async () => {
-      await store.dispatch('pesel/fetchShuffledBreedImages');
+      await store.dispatch('dogs/fetchShuffledBreedImages');
 
-      totalPages.value = store.state.pesel.shuffledBreedImages.length;
-      pesels.value = store.state.pesel.shuffledBreedImages.slice(0, limit);
+      totalPages.value = store.state.dogs.shuffledBreedImages.length;
+      dogImages.value = store.state.dogs.shuffledBreedImages.slice(0, limit);
 
       isInitialLoading.value = false;
       isLoading.value = false;
     }
 
-    watch(() => store.state.pesel.breeds, () => {
+    watch(() => store.state.dogs.breeds, () => {
       currentPage.value++;
       fetchBreedImages();
     });
@@ -99,9 +99,9 @@ export default {
     });
 
     return {
-      chunkedPesels: pesels,
-      toggleFavourites: (pesel) => store.dispatch('peselFavourites/toggleFavourites', { pesel }),
-      isFavourite: (pesel) => store.state.peselFavourites.favourites.includes(pesel),
+      chunkedDogImages: dogImages,
+      toggleFavourites: (dog) => store.dispatch('dogsFavourites/toggleFavourites', { dog }),
+      isFavourite: (dog) => store.state.dogsFavourites.favourites.includes(dog),
       isInitialLoading,
       isLoading,
       hasFetchedAll,
@@ -111,13 +111,13 @@ export default {
 </script>
 
 <style>
-.pesels-grid {
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 290px;
 }
 
-.pesels-grid-card:first-child {
+.grid-card:first-child {
   grid-column-start: 1;
   grid-column-end: 4;
   grid-row-start: 1;

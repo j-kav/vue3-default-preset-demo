@@ -51,7 +51,7 @@ export default {
   name: 'BreedFilter',
   beforeRouteEnter(to, from, next) {
     next(async (vm) => {
-      await vm.$store.dispatch('pesel/fetchAllBreeds');
+      await vm.$store.dispatch('dogs/fetchAllBreeds');
     })
   },
   setup() {
@@ -64,7 +64,7 @@ export default {
     return {
       isAlphabetSort,
       groupedAlphabetBreeds: computed(() => {
-        const alphabeticallySorted = store.state.pesel.breeds
+        const alphabeticallySorted = store.state.dogs.breeds
             .slice()
             .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
@@ -76,14 +76,14 @@ export default {
         }, Object.create(null));
       }),
       selectedBreedId: computed(() => route.params.breedId),
-      breeds: computed(() => store.state.pesel.breeds),
+      breeds: computed(() => store.state.dogs.breeds),
       selectBreedId: (breedId) => {
         isExpanded.value = !isExpanded.value;
         router.push({ name: 'breed', params: { breedId } });
       },
       isExpanded,
       toggleExpand:  () => { isExpanded.value = !isExpanded.value },
-      normalizedSelectedBreedId: (breedId) => store.state.pesel.breeds.find((breed) => breed.id === breedId)?.displayName ?? breedId
+      normalizedSelectedBreedId: (breedId) => store.state.dogs.breeds.find((breed) => breed.id === breedId)?.displayName ?? breedId
     }
   }
 }

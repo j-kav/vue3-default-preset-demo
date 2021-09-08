@@ -1,14 +1,14 @@
 import { createStore } from 'vuex'
-import pesel from './modules/pesel';
-import peselFavourites from "./modules/peselFavourites";
+import dogs from './modules/dogs';
+import dogsFavourites from "./modules/dogsFavourites";
 
 const store = createStore({
     state: {},
     mutations: {},
     actions: {},
     modules: {
-        pesel,
-        peselFavourites,
+        dogs,
+        dogsFavourites,
     },
 })
 

@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <router-link to="/" class="header-brand">PESEL</router-link>
+    <router-link to="/" class="header-brand">Dogs</router-link>
     <router-link to="/favourites" class="header-favourites">Favourites</router-link>
   </header>
 </template>

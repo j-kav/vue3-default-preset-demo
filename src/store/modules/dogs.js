@@ -1,7 +1,7 @@
-import * as peselService from '../../services/peselService';
+import * as dogsService from '../../services/dogsService';
 import shuffle from "../../utils/array/shuffle";
 
-const pesel = {
+const dogs = {
     namespaced: true,
     state: () => ({
         error: null,
@@ -40,7 +40,7 @@ const pesel = {
                 return; // all breeds have already been fetched.
             }
 
-            const [error, breeds] = await peselService.fetchAllBreeds();
+            const [error, breeds] = await dogsService.fetchAllBreeds();
 
             if (error) {
                 commit('error', error)
@@ -49,7 +49,7 @@ const pesel = {
             }
         },
         async fetchAllBreedImages ({ commit }, { breedId }) {
-            const [error, breedImages] = await peselService.fetchAllBreedImages(breedId);
+            const [error, breedImages] = await dogsService.fetchAllBreedImages(breedId);
 
             if (error) {
                 commit('error', error)
@@ -63,7 +63,7 @@ const pesel = {
                // take 30 breeds it is enough for demo
                shuffle(state.breeds).slice(0, 30)
                     // fetch 3 of every breeds
-                    .map((breed) => peselService.fetchShuffledBreedImages(breed.id, 3))
+                    .map((breed) => dogsService.fetchShuffledBreedImages(breed.id, 3))
             ).catch((error) => {
                commit('error', error);
            });
@@ -84,4 +84,4 @@ const pesel = {
     }
 }
 
-export default pesel;
+export default dogs;
