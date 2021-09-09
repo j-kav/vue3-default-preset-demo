@@ -1,7 +1,7 @@
 <template>
   <div class="breed-filter">
     <div class="breed-filter-top">
-      <div>
+      <div class="breed-filter-top__body">
         <span @click="toggleExpand"
               class="breed-filter-expand-button"
               :class="{ 'breed-filter-expand-button--expanded' : isExpanded }"
@@ -156,12 +156,20 @@ export default {
    background-image: url('~@/assets/arrow-top.svg');
  }
 
+ .breed-filter-top__body {
+   height: 37px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
  .breed-filter-top {
    margin-bottom: 10px;
    display: flex;
    justify-content: space-between;
    padding-left: 20px;
    padding-right: 20px;
+   height: 37px;
  }
 
  .sort-by-alphabet {
