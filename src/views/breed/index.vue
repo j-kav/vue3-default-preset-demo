@@ -103,7 +103,8 @@ export default {
     });
 
     onBeforeMount( () => {
-      currentPage.value++
+      currentPage.value++;
+      store.commit('dogs/breedAllImages', []);
       fetchBreedImages();
     });
 
