@@ -33,6 +33,8 @@ export default {
     color: #3C59F0;
     font-size: 32px;
     font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
   }
 
   .header-favourites {
